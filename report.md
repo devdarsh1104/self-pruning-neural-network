@@ -23,11 +23,11 @@ This ensures the model isn't just memorizing pictures but is actually learning t
 ## 4. Key Performance Metrics
 I ran three different tests, increasing the "penalty" (Lambda) for keeping weights each time. 
 
-| Penalty (Lambda) | Test Accuracy | Sparsity (Amount Deleted) |
-| :--- | :--- | :--- |
-| 0.05 (Light) | 53.06% | 2.37% |
-| 0.1 (Medium) | 53.86% | 2.48% |
-| **0.2 (Heavy)** | **54.82%** | **4.13%** |
+| Lambda | Test Accuracy (%) | Sparsity (%) |
+|--------|------------------|--------------|
+| 0.05   | 53.06            | 2.37         |
+| 0.10   | 53.86            | 2.48         |
+| 0.20   | 54.82            | 4.13         |
 
 ## 5. What the Data Tells Us
 The most interesting discovery here was the **Sparsity-Accuracy trade-off**. 
