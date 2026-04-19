@@ -29,6 +29,10 @@ I ran three different tests, increasing the "penalty" (Lambda) for keeping weigh
 | 0.10   | 53.86            | 2.48         |
 | 0.20   | 54.82            | 4.13         |
 
+As λ increases, sparsity increases while accuracy remains relatively stable. 
+This demonstrates the expected sparsity–accuracy trade-off, where higher regularization 
+encourages more pruning without significantly degrading performance.
+
 ## 5. What the Data Tells Us
 The most interesting discovery here was the **Sparsity-Accuracy trade-off**. 
 
