@@ -7,6 +7,7 @@ import torch.nn.functional as F
 import torchvision
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
+import matplotlib.pyplot as plt
 
 def set_seed(seed=42):
     random.seed(seed)
@@ -90,6 +91,26 @@ def debug_gates(model):
     print("Max:", all_gates.max().item())
     print("Mean:", all_gates.mean().item())
 
+    return all_gates
+
+
+# 🔥 FIXED PNG FUNCTION
+def plot_gates(all_gates):
+    save_path = os.path.join(os.getcwd(), "gate_distribution.png")
+
+    plt.figure(figsize=(8,5))
+    plt.hist(all_gates.numpy(), bins=50)
+    plt.title("Gate Distribution")
+    plt.xlabel("Gate Value")
+    plt.ylabel("Frequency")
+
+    plt.savefig(save_path)
+    plt.show()        # ✅ show image
+    plt.close()
+
+    print(f"\n✅ Saved at: {save_path}")
+
+
 def train(model, loader, optimizer, lam, device):
     model.train()
     total_loss = 0
@@ -116,6 +137,7 @@ def train(model, loader, optimizer, lam, device):
 
     return total_loss / total, correct / total
 
+
 @torch.no_grad()
 def evaluate(model, loader, device):
     model.eval()
@@ -131,6 +153,7 @@ def evaluate(model, loader, device):
         total += x.size(0)
 
     return correct / total
+
 
 def get_data():
     train_transform = transforms.Compose([
@@ -159,6 +182,7 @@ def get_data():
 
     return trainloader, testloader
 
+
 def main():
     set_seed()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -167,6 +191,9 @@ def main():
     trainloader, testloader = get_data()
 
     lambdas = [0.05, 0.1, 0.2]
+
+    best_model = None
+    best_acc = 0
 
     for lam in lambdas:
         print(f"\n===== Lambda = {lam} =====")
@@ -184,7 +211,16 @@ def main():
         print(f"\nTest Accuracy: {test_acc*100:.2f}%")
         print(f"Sparsity: {sparsity*100:.2f}%")
 
-        debug_gates(model)
+        if test_acc > best_acc:
+            best_acc = test_acc
+            best_model = model
+
+    print("\nGenerating gate distribution plot...")
+
+    all_gates = debug_gates(best_model)
+    plot_gates(all_gates)
+
 
 if __name__ == "__main__":
     main()
+
