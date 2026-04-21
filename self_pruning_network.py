@@ -93,8 +93,6 @@ def debug_gates(model):
 
     return all_gates
 
-
-# 🔥 FIXED PNG FUNCTION
 def plot_gates(all_gates):
     save_path = os.path.join(os.getcwd(), "gate_distribution.png")
 
@@ -105,11 +103,10 @@ def plot_gates(all_gates):
     plt.ylabel("Frequency")
 
     plt.savefig(save_path)
-    plt.show()        # ✅ show image
+    plt.show()
     plt.close()
 
-    print(f"\n✅ Saved at: {save_path}")
-
+    print(f"\nSaved at: {save_path}")
 
 def train(model, loader, optimizer, lam, device):
     model.train()
@@ -137,7 +134,6 @@ def train(model, loader, optimizer, lam, device):
 
     return total_loss / total, correct / total
 
-
 @torch.no_grad()
 def evaluate(model, loader, device):
     model.eval()
@@ -153,7 +149,6 @@ def evaluate(model, loader, device):
         total += x.size(0)
 
     return correct / total
-
 
 def get_data():
     train_transform = transforms.Compose([
@@ -181,7 +176,6 @@ def get_data():
     testloader = DataLoader(testset, batch_size=256, shuffle=False)
 
     return trainloader, testloader
-
 
 def main():
     set_seed()
@@ -220,7 +214,5 @@ def main():
     all_gates = debug_gates(best_model)
     plot_gates(all_gates)
 
-
 if __name__ == "__main__":
     main()
-
